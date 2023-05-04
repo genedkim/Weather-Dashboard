@@ -1,7 +1,8 @@
 const apiKey = 'bb192436ca1e0e01600ac8e60bedeab6';
+const searchHistory = [];
 
-const displayWeather = () => {
-    let city = $('#search-city').val()
+const displayWeather = (city) => {
+    $('#current-weather').empty();
     console.log(city);
     let queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&APPID=${apiKey}`;
 
@@ -9,16 +10,19 @@ const displayWeather = () => {
         url: queryURL,
         method: "GET"
     }).then((response)  => {
+
+        console.log(response);
         let iconCode = response.weather[0].icon;
         let iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
+        let date = moment().format('MM/DD/YYYY');
 
         let currentWeatherRender = $(`
             <h2 id="currentCity">
-                ${response.name} ${today} <img src="${iconURL}" alt="${cityWeatherResponse.weather[0].description}" />
+                ${response.name} (${date}) <img src="${iconURL}" alt="${response.weather[0].description}" />
             </h2>
             <p>Temperature: ${response.main.temp} °F</p>
+            <p>Wind: ${response.wind.speed} MPH</p>
             <p>Humidity: ${response.main.humidity}\%</p>
-            <p>Wind Speed: ${response.wind.speed} MPH</p>
         `)
 
         $("#current-weather").append(currentWeatherRender);
@@ -28,7 +32,7 @@ const displayWeather = () => {
 
         displayUVI(lat, lon);
 
-
+        displayForecast(lat, lon);
 
     })
 }
@@ -69,20 +73,76 @@ const displayUVI = (lat, lon) => {
     })
 }
 
-const displayForecast = (lat, long) => {
-    let queryURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+const displayForecast = (lat, lon) => {
+    let queryURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then((response)  => {
-        $('#five-day-forecast').empty
-        
-        for (let i = 1; i < 6; i++) {
-            
-            let forcastRender = $(``)
-            $('#five-day-forecast').append();
+        console.log(response);
+        $('#five-day-forecast').empty();
+
+        for (let i = 3; i < 43; i += 8) {
+            let date = response.list[i].dt;
+            let temp = response.list[i].main.temp;
+            let wind = response.list[i].wind.speed;
+            let humidity = response.list[i].main.humidity;
+            let iconAlt = response.list[i].weather[0].description;
+            let iconCode = response.list[i].weather[0].icon;
+            let iconURL = `https://openweathermap.org/img/w/${iconCode}.png`;
+
+            let forecastRender = $(`
+                <div class="pl-3">
+                    <div class="card pl-3 pt-3 mb-3 bg-primary text-light" style="width: 12rem;>
+                        <div class="card-body">
+                            <h5>${moment.unix(date).format('MM/DD/YYYY')} <img src=${iconURL} alt=${iconAlt}></h5>
+                            <p>Temp: ${temp} °F</p>
+                            <p>Wind: ${wind} MPH</p>
+                            <p>Humidity: ${humidity}\%</p>
+                        </div>
+                    </div>
+                <div>
+            `)
+
+            $('#five-day-forecast').append(forecastRender);
         }
     })
 }
+
+const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+$('#search-button').on('click', (event) => {
+    event.preventDefault();
+
+    let city = $('#search-city').val();
+    city = capitalizeFirstLetter(city);
+
+    if (!searchHistory.includes(city)) {
+        searchHistory.push(city);
+        let renderSearch = $(`<li class="list-group-item">${city}</li>`);
+        $('#search-history').append($(renderSearch));
+    }
+
+    displayWeather(city);
+
+    localStorage.setItem("city", JSON.stringify(searchHistory));
+})
+
+$(document).on("click", ".list-group-item", function() {
+    var pastCity = $(this).text();
+    displayWeather(pastCity);
+});
+
+$(document).ready(function() {
+    var storedHistory = JSON.parse(localStorage.getItem("city"));
+
+    if (storedHistory !== null) {
+        let index = storedHistory.length - 1;
+        var lastSearchedCity = storedHistory[index];
+        displayWeather(lastSearchedCity);
+    }
+});
 
