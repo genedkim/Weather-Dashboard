@@ -1,107 +1,102 @@
-/* Global styles */
-body {
-    font-family: 'Open Sans', sans-serif;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Raleway', sans-serif;
-  }
-  
-  /* Header styles */
-  #header {
-    background-color: #1a73e8;
-    color: #fff;
-    text-align: center;
-  }
-  
-  #header-text {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Content left styles */
-  #content-left {
-    height: 100vh;
-  }
-  
-  #search-city {
-    margin-right: 0.5rem;
-  }
-  
-  #search-button {
-    margin-left: 0.5rem;
-  }
-  
-  #search-error {
-    color: red;
-    margin-top: 1rem;
-  }
-  
-  #city-results {
-    max-height: 40vh;
-    overflow-y: scroll;
-  }
-  
-  #city-results a {
-    cursor: pointer;
-  }
-  
-  /* Content right styles */
-  #content-right {
-    height: 100vh;
-  }
-  
-  #current-weather {
-    background-color: #f5f5f5;
-    padding: 1rem;
-  }
-  
-  #current-weather h3 {
-    margin-top: 0;
-  }
-  
-  #five-day-forecast {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .forecast-card {
-    background-color: #fff;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
-    border-radius: 0.25rem;
-    width: calc(20% - 1rem);
-  }
-  
-  .forecast-card h4 {
-    margin-top: 0;
-  }
-  
-  .forecast-card p {
-    margin-bottom: 0.5rem;
-  }
-  
-  /* Responsive styles */
-  @media screen and (max-width: 768px) {
-    #content-left, #content-right {
-      height: auto;
-    }
-  
-    #content-right {
-      margin-top: 2rem;
-    }
-  
-    #header-text {
-      font-size: 3rem;
-    }
-  
-    #five-day-forecast {
-      width: 100%;
-    }
-  
-    .forecast-card {
-      width: calc(50% - 1rem);
-    }
-  }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: white;
+}
+
+
+.container-fluid {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  padding: 0.5rem;
+}
+
+.navbar h1 {
+  margin: 0;
+}
+
+.row {
+  flex-grow: 1;
+}
+
+#content-left {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#search-city {
+  flex-grow: 1;
+}
+
+#search-button {
+  margin-left: 0.5rem;
+}
+
+#search-history {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+
+#clear-storage {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+#content-right {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* style the current-weather jumbotron */
+#current-weather {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+#current-weather img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+/* style the five-day-forecast cards */
+#five-day-forecast {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.card {
+  margin-right: 0.5rem;
+}
+
+#five-day-forecast {
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+
+.input-group-append {
+  display: flex;
+}
+
+#search-city {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+#search-button {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+

@@ -24,13 +24,15 @@
                 <form>
                     <label for="search-city">Search for a City:</label>
                     <div class="form-row">
-                        <input id="search-city" class="form-control" name="city" value="Seattle"></input>
-                        <button id="search-button" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                        <div class="input-group">
+                          <input id="search-city" class="form-control" name="city" value="Seattle" />
+                          <div class="input-group-append">
+                            <button id="search-button" class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                          </div>
+                        </div>
                     </div>
                 </form>
                 <ul id="search-history" class="list-group mt-4"></ul>
-                <!-- clear storage button -->
-                <a id="clear-storage" href="#"></a>
             </div>
 
             <div class="col-9 pt-4" id="content-right">
